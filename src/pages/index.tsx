@@ -1,6 +1,15 @@
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  HStack,
+  Stack,
+  StackDivider,
+  VStack,
+} from "@chakra-ui/react";
 
 export default function Home() {
   return (
@@ -12,7 +21,20 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1>あああああ</h1>
+        <Stack spacing={4} direction="row" align="center">
+          <Button colorScheme="teal" size="xs">
+            Button
+          </Button>
+          <Button colorScheme="teal" size="sm">
+            Button
+          </Button>
+          <Button colorScheme="teal" size="md">
+            Button
+          </Button>
+          <Button colorScheme="teal" size="lg">
+            Button
+          </Button>
+        </Stack>
       </main>
 
       <footer className={styles.footer}>
