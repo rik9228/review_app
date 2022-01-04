@@ -11,11 +11,15 @@
     "@chakra-ui/react": "^1.7.3",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
+    "@types/styled-components": "^5.1.19",
     "babel-plugin-chakra-ui": "^1.0.0-next.3",
+    "firebase": "^9.6.1",
     "framer-motion": "^5",
     "next": "12.0.7",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-icons": "^4.3.1",
+    "styled-components": "^5.3.3"
   },
   "devDependencies": {
     "@types/node": "^17.0.6",
