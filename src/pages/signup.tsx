@@ -30,7 +30,7 @@ const Signup: NextPage = () => {
   const isAllInputsFilled = !!email && !!password && !!userName;
 
   useEffect(() => {
-    currentUser && router.push("/works");
+    currentUser.currentUser && router.push("/profile");
   }, [router]);
 
   return (

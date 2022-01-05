@@ -18,7 +18,7 @@ export const Header = () => {
   const currentUser = useAuth();
 
   useEffect(() => {
-    currentUser && setIsLogin(true);
+    currentUser.currentUser && setIsLogin(true);
   }, [router]);
 
   return (
