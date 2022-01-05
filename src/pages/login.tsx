@@ -28,7 +28,7 @@ const Login: NextPage = () => {
   const { loginWithGoogle, loginWithEmailAndPassword } = useAuth();
 
   useEffect(() => {
-    currentUser && router.push("/works");
+    currentUser.currentUser && router.push("/works");
   }, [router]);
 
   return (
