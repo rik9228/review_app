@@ -1,12 +1,17 @@
 import { Layout } from "../components/common/Layout";
 import { Box, Button, Heading, Flex, Text } from "@chakra-ui/react";
 import Link from "next/link";
-import { MdContainer } from "src/components/custom/MdContainer";
 
 export default function Home() {
   return (
     <Layout title="タイトル">
-      <MdContainer>
+      <Box
+        as="main"
+        maxW={"800px"}
+        margin={"0 auto"}
+        marginTop={{ sm: "80px", md: "120px" }}
+        width={"calc(100% - 16px * 2)"}
+      >
         <Heading size={"2xl"} lineHeight={1.5} textAlign={"center"}>
           みんなで作る
           <br />
@@ -77,7 +82,7 @@ export default function Home() {
             </Link>
           </Flex>
         </Flex>
-      </MdContainer>
+      </Box>
     </Layout>
   );
 }
