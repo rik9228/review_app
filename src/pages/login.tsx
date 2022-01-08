@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { auth } from "../lib/firebase";
 import { NextPage } from "next";
 import { Layout } from "../components/common/Layout";
 import {
@@ -15,10 +14,10 @@ import {
   Image,
   Text,
   Box,
-  Container,
 } from "@chakra-ui/react";
 import { FcGoogle } from "react-icons/fc";
 import { useAuth } from "../lib/AuthProvider";
+import { MdContainer } from "src/components/custom/MdContainer";
 
 const Login: NextPage = () => {
   const router = useRouter();
@@ -33,16 +32,12 @@ const Login: NextPage = () => {
 
   return (
     <Layout title="ログイン">
-      <Container
-        maxW="800px"
-        width={"calc(100% - 16px * 2)"}
-        py={10}
-        px={0}
+      <MdContainer
         display={"flex"}
         alignItems={"center"}
         justifyContent={"space-between"}
       >
-        <Stack spacing={4} w={"full"} maxW={"md"}>
+        <Stack spacing={4}>
           <Heading fontSize={"4xl"}>ログイン</Heading>
           <Flex>
             <Text>新規ユーザーの方ですか？</Text>
@@ -133,7 +128,7 @@ const Login: NextPage = () => {
             display={{ sm: "none", md: "block" }}
           />
         </Box>
-      </Container>
+      </MdContainer>
     </Layout>
   );
 };
