@@ -74,9 +74,9 @@ export const Editor = () => {
         <Heading background={"#ccc"} marginTop={10} padding={2} fontSize={"xl"}>
           プレビュー
         </Heading>
-        <Box border={"1px solid #ccc"} padding={5}>
+        {/* <Box border={"1px solid #ccc"} padding={5}>
           <span dangerouslySetInnerHTML={{ __html: marked(value) }} />
-        </Box>
+        </Box> */}
       </Box>
     </>
   );
