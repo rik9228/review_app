@@ -18,6 +18,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { doc, setDoc } from "firebase/firestore";
+import Router, { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Layout } from "src/components/common/Layout";
 import { useAuth } from "src/lib/AuthProvider";
@@ -25,6 +26,7 @@ import { db } from "src/lib/firebase";
 
 export default function Profile() {
   const currentUser = useAuth();
+  const router = useRouter();
   const [displayName, setDisplayName] = useState<string>("");
   const [classNumber, setClassNumber] = useState<string>("1");
   const [bio, setBio] = useState<string>("");
@@ -69,6 +71,7 @@ export default function Profile() {
         profileImg,
       });
       alert("ユーザーを登録しました");
+      router.push('/works');
     } catch (err: unknown) {
       if (err instanceof Error) {
         alert(err);
