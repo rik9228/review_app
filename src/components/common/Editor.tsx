@@ -4,7 +4,6 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "quill-mention";
 import "quill-mention/dist/quill.mention.css";
-import { marked } from "marked";
 
 const atValues = [
   { id: 1, value: "Fredrik Sundqvist" },
