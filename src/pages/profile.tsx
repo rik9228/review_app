@@ -18,7 +18,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { doc, setDoc } from "firebase/firestore";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Layout } from "src/components/common/Layout";
 import { useAuth } from "src/lib/AuthProvider";
@@ -71,7 +71,7 @@ export default function Profile() {
         profileImg,
       });
       alert("ユーザーを登録しました");
-      router.push('/works');
+      router.push("/works");
     } catch (err: unknown) {
       if (err instanceof Error) {
         alert(err);
@@ -169,7 +169,6 @@ export default function Profile() {
         >
           確定
         </Button>
-        {/* <Button onClick={(e) => alert(isOnline)}>確認</Button> */}
       </Container>
     </Layout>
   );
