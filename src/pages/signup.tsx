@@ -24,12 +24,12 @@ const Signup: NextPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
-  const currentUser = useAuth();
+  const { currentUser } = useAuth();
   const { loginWithGoogle, createUser } = useAuth();
   const isAllInputsFilled = !!email && !!password && !!userName;
 
   useEffect(() => {
-    currentUser.currentUser && router.push("/profile");
+    currentUser && router.push("/profile");
   }, [router]);
 
   return (

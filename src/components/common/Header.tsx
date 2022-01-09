@@ -9,16 +9,33 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import { useAuth } from "../../lib/AuthProvider";
+import { collection, onSnapshot, query } from "firebase/firestore";
+import { db } from "src/lib/firebase";
+import Link from "next/link";
 
 export const Header = () => {
   const router = useRouter();
   const [isLogin, setIsLogin] = useState(false);
-  const currentUser = useAuth();
+  const [displayName, setDisplayName] = useState("");
+  const { currentUser } = useAuth();
 
   useEffect(() => {
-    currentUser.currentUser && setIsLogin(true);
+    currentUser && setIsLogin(true);
+    let unsubscribe = () => {};
+    const getUserInfo = () => {
+      const usersQuery = query(collection(db, "users"));
+      unsubscribe = onSnapshot(usersQuery, (snapshot) => {
+        const userDocs = snapshot.docs;
+        userDocs.find((userDoc) => {
+          if (currentUser.uid === userDoc.data().userId) {
+            setDisplayName(userDoc.data().displayName);
+          }
+        });
+      });
+    };
+    getUserInfo();
+    return () => unsubscribe();
   }, [router]);
 
   return (
@@ -46,7 +63,7 @@ export const Header = () => {
                 </Link>
                 <Flex display={["none", "flex"]}>
                   こんにちは、
-                  {currentUser.currentUser.displayName ?? ""}
+                  {displayName ?? ""}
                   さん
                 </Flex>
                 <Link href="/profile">
@@ -56,7 +73,7 @@ export const Header = () => {
                     width={"40px"}
                     height={"40px"}
                     src={
-                      currentUser.currentUser.photoURL ??
+                      currentUser.photoURL ??
                       "https://cdn-icons-png.flaticon.com/512/149/149071.png"
                     }
                     cursor={"pointer"}
