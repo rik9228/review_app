@@ -32,7 +32,7 @@ export default function New() {
 <h2>■ その他</h2>
 `;
   const router = useRouter();
-  const currentUser = useAuth();
+  const { currentUser } = useAuth();
   const [title, setTitle] = useState("");
   const [shareLink, setShareLink] = useState("");
   const [imgSrc, setImgSrc] = useState();
@@ -53,11 +53,12 @@ export default function New() {
 
   const submitWork = async () => {
     try {
-      let userName = currentUser.currentUser!.displayName;
-      let userId = currentUser.currentUser!.uid;
+      let userName = currentUser!.displayName;
+      let userId = currentUser!.uid;
       await addDoc(collection(db, "works"), {
         createdBy: userName,
         createdAt: now,
+        title,
         imgSrc,
         shareLink,
         userId,

@@ -23,11 +23,11 @@ const Login: NextPage = () => {
   const router = useRouter();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const currentUser = useAuth();
+  const { currentUser } = useAuth();
   const { loginWithGoogle, loginWithEmailAndPassword } = useAuth();
 
   useEffect(() => {
-    currentUser.currentUser && router.push("/works");
+    currentUser && router.push("/works");
   }, [router]);
 
   return (
