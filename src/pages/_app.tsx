@@ -1,4 +1,6 @@
 import "../styles/globals.css";
+import "react-quill/dist/quill.snow.css";
+
 import { ChakraProvider } from "@chakra-ui/react";
 import { AppProps } from "next/app";
 import AuthProvider from "src/lib/AuthProvider";

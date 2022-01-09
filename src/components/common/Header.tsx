@@ -19,7 +19,6 @@ export const Header = () => {
 
   useEffect(() => {
     currentUser.currentUser && setIsLogin(true);
-    console.log(currentUser.currentUser.photoURL);
   }, [router]);
 
   return (
