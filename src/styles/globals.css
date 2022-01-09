@@ -14,3 +14,41 @@ a {
 * {
   box-sizing: border-box;
 }
+
+/* rte */
+
+.ql-editor p {
+  font-size: 16px;
+}
+
+.c-preview li {
+  margin-left: 1.5em;
+}
+
+.preview__text .ql-indent-1 {
+  margin-left: 3em;
+}
+
+.preview__text .ql-indent-2 {
+  margin-left: 4.5em;
+}
+
+.preview__text .ql-indent-3 {
+  margin-left: 6em;
+}
+
+.preview__text .ql-indent-4 {
+  margin-left: 7.5em;
+}
+
+/* .c-preview__text h2 {
+  font-size: 20px;
+}
+
+.c-preview__text .ql-align-center {
+  text-align: center;
+}
+
+.c-preview__text .ql-align-right {
+  text-align: right;
+} */
