@@ -17,7 +17,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { doc, setDoc } from "firebase/firestore";
+import { collection, doc, onSnapshot, query, setDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Layout } from "src/components/common/Layout";
@@ -25,7 +25,7 @@ import { useAuth } from "src/lib/AuthProvider";
 import { db } from "src/lib/firebase";
 
 export default function Profile() {
-  const currentUser = useAuth();
+  const { currentUser } = useAuth();
   const router = useRouter();
   const [displayName, setDisplayName] = useState<string>("");
   const [classNumber, setClassNumber] = useState<string>("1");
@@ -34,9 +34,24 @@ export default function Profile() {
   const [profileImg, setProfileImg] = useState<string>("");
 
   useEffect(() => {
-    currentUser && setProfileImg(currentUser.currentUser.photoURL);
-    currentUser && setDisplayName(currentUser.currentUser.displayName);
-    currentUser && setBio("よろしくお願いします。");
+    let unsubscribe = () => {};
+    const getUserInfo = () => {
+      const usersQuery = query(collection(db, "users"));
+      unsubscribe = onSnapshot(usersQuery, (snapshot) => {
+        const userDocs = snapshot.docs;
+        userDocs.find((userDoc) => {
+          if (currentUser.uid === userDoc.data().userId) {
+            setDisplayName(userDoc.data().displayName);
+            setIsOnline(userDoc.data().isOnline);
+            setClassNumber(userDoc.data().classNumber);
+            setBio(userDoc.data().bio);
+            setProfileImg(userDoc.data().profileImg);
+          }
+        });
+      });
+    };
+    getUserInfo();
+    return () => unsubscribe();
   }, []);
 
   const setIsOnlineHandler = (e: string) => {
@@ -60,21 +75,23 @@ export default function Profile() {
   };
 
   const acceptProfile = async () => {
-    try {
-      let userID = currentUser.currentUser!.uid;
-      await setDoc(doc(db, "users", userID), {
-        userID,
-        displayName,
-        classNumber,
-        bio,
-        isOnline,
-        profileImg,
-      });
-      alert("ユーザーを登録しました");
-      router.push("/works");
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        alert(err);
+    if (!currentUser) {
+      router.push("/login");
+    } else {
+      let userId = currentUser.uid;
+      try {
+        await setDoc(doc(db, "users", userId), {
+          userId,
+          displayName,
+          classNumber,
+          bio,
+          isOnline,
+          profileImg,
+        });
+        alert("プロフィールを更新しました");
+      } catch (error) {
+        console.error(error);
+        alert("プロフィールの作成に失敗しました");
       }
     }
   };
@@ -98,6 +115,7 @@ export default function Profile() {
                 paddingY={"5px"}
                 placeholder="田中 太郎"
                 defaultValue={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
               />
             </FormControl>
             <RadioGroup
@@ -139,7 +157,7 @@ export default function Profile() {
                 placeholder="よろしくお願いします。"
                 minWidth={"100%"}
                 paddingY={"5px"}
-                defaultValue={"よろしくお願いします。"}
+                defaultValue={bio}
                 onChange={(e) => setBio(e.target.value)}
               />
             </FormControl>
