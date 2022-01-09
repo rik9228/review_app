@@ -1,60 +1,77 @@
-import { useState } from "react";
-import "react-quill/dist/quill.snow.css";
-const ReactQuill =
-  typeof window === "object" ? require("react-quill") : () => false;
+import dynamic from "next/dynamic";
+import parse from "html-react-parser";
+import { useMemo, useState } from "react";
+import { Flex, Box, Button, Heading } from "@chakra-ui/react";
+import { AiFillEye } from "react-icons/Ai";
 
-// import "quill-mention";
-// import "quill-mention/dist/quill.mention.css";
+const SSRNoWrapperRichTextEditor = dynamic(() => import("@mantine/rte"), {
+  ssr: false,
+});
 
-// const atValues = [
-//   { id: 1, value: "Fredrik Sundqvist" },
-//   { id: 2, value: "Patrik Sjölin" },
-// ];
+const people = [
+  { id: 1, value: "Bill Horsefighter" },
+  { id: 2, value: "Amanda Hijacker" },
+  { id: 3, value: "Leo Summerhalter" },
+  { id: 4, value: "Jane Sinkspitter" },
+];
 
-const modules = {
-  toolbar: [
-    [{ font: [] }],
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    ["bold", "italic", "underline", "strike"],
-    [{ color: [] }, { background: [] }],
-    [{ script: "sub" }, { script: "super" }],
-    ["blockquote", "code-block"],
-    [{ list: "ordered" }, { list: "bullet" }],
-    [{ indent: "-1" }, { indent: "+1" }, { align: [] }],
-    ["link", "image", "video"],
-    ["clean"],
-  ],
-  // mention: {
-  //   allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-  //   mentionDenotationChars: ["@", "#"],
-  //   source: function (searchTerm, renderItem, mentionChar) {
-  //     let values;
-  //     if (mentionChar === "@" || mentionChar === "#") {
-  //       values = atValues;
-  //     }
-  //     if (searchTerm.length === 0) {
-  //       renderItem(values, searchTerm);
-  //     } else {
-  //       const matches = [];
-  //       for (let i = 0; i < values.length; i++)
-  //         if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase()))
-  //           matches.push(values[i]);
-  //       renderItem(matches, searchTerm);
-  //     }
-  //   },
-  // },
-};
+function Editor({ description, setDescription }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const mentions = useMemo(
+    () => ({
+      allowedChars: /^[A-Za-zsÅÄÖåäö]*$/,
+      mentionDenotationChars: ["@", "#"],
+      source: (searchTerm, renderList, mentionChar) => {
+        const list = mentionChar === "@" && people;
+        const includesSearchTerm = list.filter((item) =>
+          item.value.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        renderList(includesSearchTerm);
+      },
+    }),
+    []
+  );
 
-export const Editor = () => {
-  const [value, setValue] = useState("");
-  console.log(value);
+  const togglePreview = () => {
+    !isOpen ? setIsOpen(true) : setIsOpen(false);
+  };
 
   return (
-    <ReactQuill
-      modules={modules}
-      theme="snow"
-      onChange={setValue}
-      placeholder="Content goes here..."
-    />
+    <>
+      <SSRNoWrapperRichTextEditor
+        value={description}
+        onChange={setDescription}
+        mentions={mentions}
+        controls={[
+          ["bold", "italic", "underline", "link"],
+          ["unorderedList", "h1", "h2", "h3"],
+          ["alignLeft", "alignCenter", "alignRight"],
+          ["video", "image"],
+        ]}
+      />
+      <Flex justifyContent={"flex-end"} marginTop={4}>
+        <Button leftIcon={<AiFillEye />} onClick={togglePreview}>
+          プレビューを開く
+        </Button>
+      </Flex>
+
+      {/* {isOpen && (
+        <Box
+          border={"1px solid #ccc"}
+          borderRadius={4}
+          marginTop={10}
+          className="ql-snow mantine-1mriphm"
+        >
+          <Heading as="h3" fontSize={"lg"} padding={5} background={"#ccc"}>
+            プレビュー
+          </Heading>
+          <Box padding={5} className="ql-editor">
+            {parse(value)}
+          </Box>
+        </Box>
+      )} */}
+    </>
   );
-};
+}
+
+export default Editor;
