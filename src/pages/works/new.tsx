@@ -13,7 +13,7 @@ import { Layout } from "src/components/common/Layout";
 import { LgContainer } from "src/components/custom/LgContainer";
 import TextEditor from "src/components/common/Editor";
 import { useState } from "react";
-import { addDoc, collection, doc, setDoc, Timestamp } from "firebase/firestore";
+import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { db } from "src/lib/firebase";
 import { useAuth } from "src/lib/AuthProvider";
@@ -44,7 +44,7 @@ export default function New() {
       const file = e.target.files[0];
       const reader = new FileReader();
       reader.onload = (e: any) => {
-        console.log(e.target.result);
+        console.log(e.target);
         setImgSrc(e.target.result);
       };
       reader.readAsDataURL(file);
