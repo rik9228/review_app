@@ -21,6 +21,7 @@ import { collection, doc, onSnapshot, query, setDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Layout } from "src/components/common/Layout";
+import { SmContainer } from "src/components/custom/SmContainer";
 import { useAuth } from "src/lib/AuthProvider";
 import { db } from "src/lib/firebase";
 
@@ -97,7 +98,7 @@ export default function Profile() {
   };
   return (
     <Layout title="プロファイル">
-      <Container maxW={"650px"} marginTop={{ sm: "80px", md: "120px" }}>
+      <SmContainer>
         <Heading textAlign={"center"}>プロフィール</Heading>
         <Flex justifyContent={"space-between"} marginTop={["56px", "80px"]}>
           <Stack direction="column" justifyContent={"space-between"}>
@@ -187,7 +188,7 @@ export default function Profile() {
         >
           確定
         </Button>
-      </Container>
+      </SmContainer>
     </Layout>
   );
 }
