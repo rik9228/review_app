@@ -1,7 +1,7 @@
 import { Timestamp } from "@firebase/firestore";
 export type Work = {
+  id: string;
   createdAt: Timestamp;
-  createdBy: string;
   imgSrc: string;
   shareLink: string;
   title: string;

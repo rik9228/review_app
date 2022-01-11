@@ -35,7 +35,7 @@ export const Card = ({ work, user }: Props) => {
           marginTop={4}
           width={"100%"}
           colorScheme={"blue"}
-          onClick={() => router.push("/works/:workId")}
+          onClick={() => router.push(`/works/${work.id}`)}
         >
           詳細を見る
         </Button>

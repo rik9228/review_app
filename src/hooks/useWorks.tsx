@@ -16,8 +16,8 @@ function useWorks(): { works: Work[]; isLoading: boolean } {
         setIsLoading(false);
         const workDocs = snapshot.docs;
         const fetchedWorks: Work[] = workDocs.map((workDoc) => ({
+          id: workDoc.id,
           createdAt: workDoc.data().createdAt,
-          createdBy: workDoc.data().createdBy,
           imgSrc: workDoc.data().imgSrc,
           shareLink: workDoc.data().shareLink,
           title: workDoc.data().title,
