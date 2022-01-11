@@ -1,4 +1,4 @@
-import { Box, Button, Heading, Img, Text } from "@chakra-ui/react";
+import { Box, Button, Heading, Img, Stack, Text } from "@chakra-ui/react";
 import { format } from "date-fns";
 import { useRouter } from "next/router";
 import { User } from "src/types/User";
@@ -22,10 +22,24 @@ export const Card = ({ work, user }: Props) => {
         objectFit={"cover"}
         objectPosition={"top"}
       />
-      <Heading as="h3">{work.title}</Heading>
-      <Text>投稿日時：{formattedCreatedAt}</Text>
-      <Text>受講期：{user.displayName}</Text>
-      <Button onClick={() => router.push("/works/:workId")}>詳細を見る</Button>
+      <Box padding={6}>
+        <Heading as="h3" fontSize={"lg"}>
+          {user.displayName}さん&nbsp;ポートフォリオ
+        </Heading>
+        <Text marginTop={4}>投稿日時：{formattedCreatedAt}</Text>
+        <Text marginTop={2}>
+          受講期：{user.isOnline && "オンライン"}
+          {user.classNumber}期
+        </Text>
+        <Button
+          marginTop={4}
+          width={"100%"}
+          colorScheme={"blue"}
+          onClick={() => router.push("/works/:workId")}
+        >
+          詳細を見る
+        </Button>
+      </Box>
     </Box>
   );
 };
