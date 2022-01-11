@@ -7,56 +7,58 @@ import {
   Input,
   Box,
   Img,
-  Flex,
 } from "@chakra-ui/react";
 import { Layout } from "src/components/common/Layout";
 import { LgContainer } from "src/components/custom/LgContainer";
-import TextEditor from "src/components/common/Editor";
+import { Editor } from "src/components/common/Editor";
 import { useState } from "react";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { db } from "src/lib/firebase";
 import { useAuth } from "src/lib/AuthProvider";
+import Resizer from "react-image-file-resizer";
 
 export default function New() {
-  const initialValue = `
-<h2>■ 作品概要</h2>
-<br/>
-<br/>
-<h2>■ 工夫したところ</h2>
-<br/>
-<br/>
-<h2>■ 気になっていること</h2>
-<br/>
-<br/>
-<h2>■ その他</h2>
-`;
+  const initialValue = `## 作品概要\n\n## 工夫したところ\n\n## 気になっていること\n\n## その他`;
   const router = useRouter();
   const { currentUser } = useAuth();
   const [title, setTitle] = useState("");
   const [shareLink, setShareLink] = useState("");
-  const [imgSrc, setImgSrc] = useState();
+  const [imgSrc, setImgSrc] = useState("");
   const [description, setDescription] = useState(initialValue);
   const now = Timestamp.now().toDate();
 
-  const selectImg = (e) => {
-    if (e.target.files && e.target.files[0]) {
+  const resizeFile = (file: Blob): Promise<string> => {
+    return new Promise((resolve) => {
+      Resizer.imageFileResizer(
+        file,
+        1920,
+        1920,
+        "WEBP",
+        100,
+        0,
+        (uri) => {
+          resolve(uri as string);
+        },
+        "base64"
+      );
+    });
+  };
+
+  const selectImg = async (e) => {
+    try {
       const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        console.log(e.target);
-        setImgSrc(e.target.result);
-      };
-      reader.readAsDataURL(file);
+      const image = await resizeFile(file);
+      setImgSrc(image);
+    } catch (error) {
+      console.error(error);
     }
   };
 
   const submitWork = async () => {
     try {
-      let userName = currentUser!.displayName;
       let userId = currentUser!.uid;
       await addDoc(collection(db, "works"), {
-        createdBy: userName,
         createdAt: now,
         title,
         imgSrc,
@@ -73,7 +75,7 @@ export default function New() {
   };
 
   return (
-    <Layout title="タイトル">
+    <Layout title="新規作品投稿">
       <LgContainer>
         <Heading textAlign={"center"}>新規作品投稿</Heading>
         <Box marginTop={["56px", "80px"]}>
@@ -163,10 +165,7 @@ export default function New() {
           >
             相談内容
           </Heading>
-          <TextEditor
-            description={description}
-            setDescription={setDescription}
-          />
+          <Editor description={description} setDescription={setDescription} />
         </Box>
         <Button
           colorScheme={"teal"}
