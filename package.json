@@ -14,6 +14,7 @@
     "@mantine/core": "^3.5.3",
     "@mantine/hooks": "^3.5.3",
     "@mantine/rte": "^3.5.3",
+    "axios": "^0.24.0",
     "babel-plugin-chakra-ui": "^1.0.0-next.3",
     "date-fns": "^2.28.0",
     "firebase": "^9.6.1",
