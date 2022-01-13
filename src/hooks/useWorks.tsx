@@ -1,5 +1,5 @@
 import { db } from "../lib/firebase";
-import { collection, doc, onSnapshot, query } from "firebase/firestore";
+import { collection, onSnapshot, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Work } from "../types/Work";
 
@@ -18,7 +18,7 @@ function useWorks(): { works: Work[]; isLoading: boolean } {
         const fetchedWorks: Work[] = workDocs.map((workDoc) => ({
           id: workDoc.id,
           createdAt: workDoc.data().createdAt,
-          imgSrc: workDoc.data().imgSrc,
+          imgSrc: workDoc.data().image,
           shareLink: workDoc.data().shareLink,
           title: workDoc.data().title,
           userId: workDoc.data().userId,

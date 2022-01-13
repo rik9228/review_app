@@ -15,25 +15,48 @@ import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { db } from "src/lib/firebase";
 import { useAuth } from "src/lib/AuthProvider";
+import axios from "axios";
 
 export default function New() {
   const initialValue = `## 作品概要\n\n## 工夫したところ\n\n## 気になっていること\n\n## その他`;
+
   const router = useRouter();
+  const now = Timestamp.now().toDate();
   const { currentUser } = useAuth();
   const [title, setTitle] = useState("");
   const [shareLink, setShareLink] = useState("");
   const [iFrameLink, setIFrameLink] = useState("");
+  const [link, setLink] = useState("");
   const [description, setDescription] = useState(initialValue);
-  const now = Timestamp.now().toDate();
+
+  const fetchLinkPreview = async () => {
+    let result;
+    const baseUrl = "https://api.linkpreview.net";
+    const key = "bb76800dc727d49004e78fa6efbac1a8";
+    const linkPreviewResource = { key, q: link };
+
+    try {
+      result = await axios.post(baseUrl, linkPreviewResource);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error);
+        result = "";
+      }
+    } finally {
+      return result.data;
+    }
+  };
 
   const setShareLinkHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const shareLink = e.target.value;
     setShareLink(shareLink);
     const replcedShareLink = shareLink.replace("view", "embed"); // 埋め込み用リンクに書き換え
     setIFrameLink(replcedShareLink);
+    setLink(replcedShareLink);
   };
 
   const submitWork = async () => {
+    const { image } = await fetchLinkPreview();
     try {
       let userId = currentUser!.uid;
       await addDoc(collection(db, "works"), {
@@ -41,6 +64,7 @@ export default function New() {
         title,
         shareLink,
         iFrameLink,
+        image,
         userId,
       });
       alert("作品を投稿しました");
@@ -105,30 +129,6 @@ export default function New() {
                 onChange={(e) => setShareLinkHandler(e)}
               />
             </FormControl>
-
-            {/* <FormControl display={"flex"} alignItems={"center"}>
-              <FormLabel
-                htmlFor="img"
-                marginBottom={0}
-                whiteSpace={"nowrap"}
-                minWidth={"240px"}
-              >
-                デザイン共有コード（iFrame）：
-              </FormLabel>
-              <Input
-                id="img"
-                type="text"
-                variant={"unstyled"}
-                borderBottom={"1px"}
-                borderRadius={"none"}
-                width={"100%"}
-                paddingY={"5px"}
-                placeholder="http://example.com"
-                onChange={(e) => {
-                  extractIFrameLink(e);
-                }}
-              />
-            </FormControl> */}
           </Stack>
           <Heading
             as="h3"
