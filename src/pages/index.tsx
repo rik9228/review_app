@@ -1,7 +1,7 @@
 import { Layout } from "../components/common/Layout";
 import { Button, Heading, Flex, Text } from "@chakra-ui/react";
-import Link from "next/link";
 import { MdContainer } from "src/components/custom/MdContainer";
+import Link from "next/link";
 
 export default function Home() {
   return (
