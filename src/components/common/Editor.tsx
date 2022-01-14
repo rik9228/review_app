@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import MarkdownIt from "markdown-it";
 import insert from "markdown-it-ins";
 import "react-markdown-editor-lite/lib/index.css";
+import { memo } from "react";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
   ssr: false,
@@ -18,7 +19,7 @@ function onImageUpload(file) {
   });
 }
 
-export const Editor = ({ description, setDescription }) => {
+const Editor = ({ description, setDescription }) => {
   return (
     <MdEditor
       style={{ height: "500px" }}
@@ -29,3 +30,5 @@ export const Editor = ({ description, setDescription }) => {
     />
   );
 };
+
+export default memo(Editor);
