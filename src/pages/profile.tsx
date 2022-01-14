@@ -29,7 +29,7 @@ export default function Profile() {
   const { currentUser } = useAuth();
   const router = useRouter();
   const [displayName, setDisplayName] = useState<string>("");
-  const [classNumber, setClassNumber] = useState<string>("1");
+  const [classNumber, setClassNumber] = useState<string>("");
   const [bio, setBio] = useState<string>("");
   const [isOnline, setIsOnline] = useState<boolean>(false);
   const [profileImg, setProfileImg] = useState<string>("");
@@ -96,6 +96,7 @@ export default function Profile() {
       }
     }
   };
+  
   return (
     <Layout title="プロファイル">
       <SmContainer>
@@ -120,7 +121,7 @@ export default function Profile() {
               />
             </FormControl>
             <RadioGroup
-              defaultValue="1"
+              value={!isOnline ? "1" : "2"}
               onChange={(e) => setIsOnlineHandler(e)}
             >
               <Stack spacing={5} direction="row">
@@ -133,7 +134,7 @@ export default function Profile() {
                 受講期：
               </FormLabel>
               <NumberInput
-                defaultValue={1}
+                value={classNumber}
                 min={1}
                 onChange={(e) => setClassNumber(e)}
               >

@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { Layout } from "src/components/common/Layout";
 import { LgContainer } from "src/components/custom/LgContainer";
-import { Editor } from "src/components/common/Editor";
+import Editor from "src/components/common/Editor";
 import { ChangeEvent, useState } from "react";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useRouter } from "next/router";
