@@ -6,63 +6,65 @@ import {
   FormLabel,
   Input,
   Box,
-  Img,
 } from "@chakra-ui/react";
 import { Layout } from "src/components/common/Layout";
 import { LgContainer } from "src/components/custom/LgContainer";
-import { Editor } from "src/components/common/Editor";
-import { useState } from "react";
+import Editor from "src/components/common/Editor";
+import { ChangeEvent, useState } from "react";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { db } from "src/lib/firebase";
 import { useAuth } from "src/lib/AuthProvider";
-import Resizer from "react-image-file-resizer";
+import axios from "axios";
 
 export default function New() {
   const initialValue = `## 作品概要\n\n## 工夫したところ\n\n## 気になっていること\n\n## その他`;
+
   const router = useRouter();
+  const now = Timestamp.now().toDate();
   const { currentUser } = useAuth();
   const [title, setTitle] = useState("");
   const [shareLink, setShareLink] = useState("");
-  const [imgSrc, setImgSrc] = useState("");
+  const [iFrameLink, setIFrameLink] = useState("");
+  const [link, setLink] = useState("");
   const [description, setDescription] = useState(initialValue);
-  const now = Timestamp.now().toDate();
 
-  const resizeFile = (file: Blob): Promise<string> => {
-    return new Promise((resolve) => {
-      Resizer.imageFileResizer(
-        file,
-        1920,
-        1920,
-        "WEBP",
-        100,
-        0,
-        (uri) => {
-          resolve(uri as string);
-        },
-        "base64"
-      );
-    });
-  };
+  const fetchLinkPreview = async () => {
+    let result;
+    const baseUrl = "https://api.linkpreview.net";
+    const key = "bb76800dc727d49004e78fa6efbac1a8";
+    const linkPreviewResource = { key, q: link };
 
-  const selectImg = async (e) => {
     try {
-      const file = e.target.files[0];
-      const image = await resizeFile(file);
-      setImgSrc(image);
-    } catch (error) {
-      console.error(error);
+      result = await axios.post(baseUrl, linkPreviewResource);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error);
+        result = "";
+      }
+    } finally {
+      return result.data;
     }
   };
 
+  const setShareLinkHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const shareLink = e.target.value;
+    setShareLink(shareLink);
+    const replcedShareLink = shareLink.replace("view", "embed"); // 埋め込み用リンクに書き換え
+    setIFrameLink(replcedShareLink);
+    setLink(replcedShareLink);
+  };
+
   const submitWork = async () => {
+    const { image } = await fetchLinkPreview();
     try {
       let userId = currentUser!.uid;
       await addDoc(collection(db, "works"), {
         createdAt: now,
         title,
-        imgSrc,
         shareLink,
+        iFrameLink,
+        image,
         userId,
       });
       alert("作品を投稿しました");
@@ -89,7 +91,7 @@ export default function New() {
                 htmlFor="title"
                 marginBottom={0}
                 whiteSpace={"nowrap"}
-                minWidth={"220px"}
+                minWidth={"240px"}
               >
                 タイトル：
               </FormLabel>
@@ -111,9 +113,9 @@ export default function New() {
                 htmlFor="img"
                 marginBottom={0}
                 whiteSpace={"nowrap"}
-                minWidth={"220px"}
+                minWidth={"240px"}
               >
-                デザインカンプ共有URL：
+                デザイン共有URL：
               </FormLabel>
               <Input
                 id="img"
@@ -124,35 +126,9 @@ export default function New() {
                 width={"100%"}
                 paddingY={"5px"}
                 placeholder="http://example.com"
-                onChange={(e) => setShareLink(e.target.value)}
+                onChange={(e) => setShareLinkHandler(e)}
               />
             </FormControl>
-            <FormControl display={"flex"} alignItems={"center"}>
-              <FormLabel
-                htmlFor="share"
-                marginBottom={0}
-                whiteSpace={"nowrap"}
-                minWidth={"220px"}
-              >
-                デザインカンプ画像：
-              </FormLabel>
-              <>
-                <Input
-                  size="xs"
-                  type={"file"}
-                  border="none"
-                  onChange={selectImg}
-                />
-              </>
-            </FormControl>
-            <Img
-              src={imgSrc}
-              width={"50%"}
-              marginTop={"32px !important"}
-              marginRight={"auto !important"}
-              marginLeft={"auto !important"}
-              display={"block"}
-            />
           </Stack>
           <Heading
             as="h3"
