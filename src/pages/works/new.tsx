@@ -15,7 +15,6 @@ import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { db } from "src/lib/firebase";
 import { useAuth } from "src/lib/AuthProvider";
-import axios from "axios";
 
 export default function New() {
   const initialValue = `## 作品概要\n\n## 工夫したところ\n\n## 気になっていること\n\n## その他`;
@@ -31,19 +30,22 @@ export default function New() {
 
   const fetchLinkPreview = async () => {
     let result;
-    const baseUrl = "https://api.linkpreview.net";
     const key = "bb76800dc727d49004e78fa6efbac1a8";
     const linkPreviewResource = { key, q: link };
 
     try {
-      result = await axios.post(baseUrl, linkPreviewResource);
-    } catch (error: unknown) {
+      result = fetch("https://api.linkpreview.net", {
+        method: "POST",
+        mode: "cors",
+        body: JSON.stringify(linkPreviewResource),
+      }).then((data) => data.json());
+    } catch (error) {
       if (error instanceof Error) {
         console.error(error);
         result = "";
       }
     } finally {
-      return result.data;
+      return result;
     }
   };
 
@@ -56,6 +58,8 @@ export default function New() {
   };
 
   const submitWork = async () => {
+    await fetchLinkPreview();
+
     const { image } = await fetchLinkPreview();
     try {
       let userId = currentUser!.uid;
