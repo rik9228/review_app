@@ -15,6 +15,51 @@ a {
   box-sizing: border-box;
 }
 
+li {
+  margin-left: 2em;
+}
+
+li.ql-indent-1 {
+  margin-left: 4em;
+  list-style: circle;
+}
+
+li.ql-indent-3 {
+  margin-left: 6em;
+  list-style: square;
+}
+
+.ql-snow .ql-tooltip a.ql-action::after {
+  display: none;
+}
+
+img.is-active {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+/* レビューテキスト画像 */
+.p-review-txt img {
+  max-width: 100px;
+  width: 14vw;
+  height: 20vw;
+  max-height: 150px;
+  object-fit: cover;
+  display: inline-block;
+}
+
+.p-review-txt img:not(:first-of-type) {
+  margin-left: 16px;
+}
+
+code {
+  display: inline-block;
+  margin-top: 0.25em;
+  padding: 0.35em;
+  background: #000;
+  color: #fff;
+}
+
 /* rte */
 
 .ql-editor p {
@@ -39,6 +84,22 @@ a {
 
 .preview__text .ql-indent-4 {
   margin-left: 7.5em;
+}
+
+.c-description h2 {
+  font-weight: bold;
+  font-size: 24px;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+}
+
+.c-description h2:not(:first-of-type) {
+  margin-top: 40px;
+}
+
+.c-description p {
+  font-size: 16px;
 }
 
 /* .c-preview__text h2 {
