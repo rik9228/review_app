@@ -1,9 +1,11 @@
 import { Timestamp } from "@firebase/firestore";
 export type Work = {
-  id: string;
-  createdAt: Timestamp;
-  imgSrc: string;
+  id?: string;
+  description?: string;
+  image: string;
   shareLink: string;
+  iFrameLink: string;
   title: string;
-  userId: string;
+  createdAt: Timestamp;
+  userId?: string;
 };

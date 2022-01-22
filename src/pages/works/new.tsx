@@ -9,12 +9,12 @@ import {
 } from "@chakra-ui/react";
 import { Layout } from "src/components/common/Layout";
 import { LgContainer } from "src/components/custom/LgContainer";
-import Editor from "src/components/common/Editor";
 import { ChangeEvent, useState } from "react";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { db } from "src/lib/firebase";
 import { useAuth } from "src/lib/AuthProvider";
+import Editor from "src/components/common/Editor";
 
 export default function New() {
   const initialValue = `## 作品概要\n\n## 工夫したところ\n\n## 気になっていること\n\n## その他`;
@@ -59,10 +59,10 @@ export default function New() {
 
   const submitWork = async () => {
     await fetchLinkPreview();
-
     const { image } = await fetchLinkPreview();
     try {
       let userId = currentUser!.uid;
+
       await addDoc(collection(db, "works"), {
         createdAt: now,
         title,
@@ -70,6 +70,7 @@ export default function New() {
         iFrameLink,
         image,
         userId,
+        description,
       });
       alert("作品を投稿しました");
       router.push("/works");

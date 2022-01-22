@@ -1,5 +1,5 @@
 import { db } from "../lib/firebase";
-import { collection, onSnapshot, query } from "firebase/firestore";
+import { collection, onSnapshot, query, Timestamp } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Work } from "../types/Work";
 
@@ -15,14 +15,16 @@ function useWorks(): { works: Work[]; isLoading: boolean } {
       unsubscribe = onSnapshot(worksQuery, (snapshot) => {
         setIsLoading(false);
         const workDocs = snapshot.docs;
-        const fetchedWorks: Work[] = workDocs.map((workDoc) => ({
-          id: workDoc.id,
-          createdAt: workDoc.data().createdAt,
-          imgSrc: workDoc.data().image,
-          shareLink: workDoc.data().shareLink,
-          title: workDoc.data().title,
-          userId: workDoc.data().userId,
+        const fetchedWorks = workDocs.map((workDoc) => ({
+          id: workDoc.id as string,
+          createdAt: workDoc.data().createdAt as Timestamp,
+          image: workDoc.data().image as string,
+          iFrameLink: workDoc.data().iFrameLink as string,
+          shareLink: workDoc.data().shareLink as string,
+          title: workDoc.data().title as string,
+          userId: workDoc.data().userId as string,
         }));
+
         setWorks(fetchedWorks);
       });
     };

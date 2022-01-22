@@ -14,6 +14,7 @@ function useUsers(): { users: User[]; isLoading: boolean } {
       const worksQuery = query(collection(db, "users"));
       unsubscribe = onSnapshot(worksQuery, (snapshot) => {
         setIsLoading(false);
+
         const workDocs = snapshot.docs;
         const fetchedUsers: User[] = workDocs.map((userDoc) => ({
           bio: userDoc.data().bio,
