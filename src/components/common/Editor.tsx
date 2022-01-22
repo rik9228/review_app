@@ -1,8 +1,8 @@
 import dynamic from "next/dynamic";
 import MarkdownIt from "markdown-it";
 import insert from "markdown-it-ins";
-import "react-markdown-editor-lite/lib/index.css";
 import { memo } from "react";
+import "react-markdown-editor-lite/lib/index.css";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
   ssr: false,
@@ -19,14 +19,15 @@ function onImageUpload(file) {
   });
 }
 
-const Editor = ({ description, setDescription }) => {
+const Editor = ({ description, setDescription, height = "400px" }) => {
   return (
     <MdEditor
-      style={{ height: "500px" }}
+      style={{ height: height }}
       renderHTML={(text) => mdParser.render(text)}
       onChange={(e) => setDescription(e.html)}
       onImageUpload={onImageUpload}
       defaultValue={description}
+      placeholder="メッセージを入力してください"
     />
   );
 };

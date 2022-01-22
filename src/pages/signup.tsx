@@ -26,7 +26,7 @@ const Signup: NextPage = () => {
   const [userName, setUserName] = useState("");
   const { currentUser } = useAuth();
   const { loginWithGoogle, createUser } = useAuth();
-  const isAllInputsFilled = !!email && !!password && !!userName;
+  const isAllInputsFilled = !!email && !!password;
 
   useEffect(() => {
     currentUser && router.push("/profile");
@@ -64,15 +64,15 @@ const Signup: NextPage = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
           </FormControl>
-          <FormControl id="username">
-            <FormLabel>表示名</FormLabel>
+          {/* <FormControl id="username"> */}
+          {/* <FormLabel>表示名</FormLabel>
             <Input
               type="username"
               placeholder="田中 太郎"
               required
               onChange={(e) => setUserName(e.target.value)}
-            />
-          </FormControl>
+            /> */}
+          {/* </FormControl> */}
           <FormControl id="password">
             <FormLabel>パスワード</FormLabel>
             <Input
@@ -94,7 +94,7 @@ const Signup: NextPage = () => {
               variant={"solid"}
               onClick={(e) => {
                 e.preventDefault();
-                createUser(userName, email, password);
+                createUser(email, password);
               }}
               disabled={!isAllInputsFilled}
             >

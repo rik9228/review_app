@@ -18,7 +18,7 @@ export const Header = () => {
   const router = useRouter();
   const [isLogin, setIsLogin] = useState(false);
   const [displayName, setDisplayName] = useState("");
-  const { currentUser } = useAuth();
+  const { currentUser, logout } = useAuth();
 
   useEffect(() => {
     currentUser && setIsLogin(true);
@@ -79,6 +79,15 @@ export const Header = () => {
                     cursor={"pointer"}
                   />
                 </Link>
+                <Button
+                  as="a"
+                  colorScheme="red"
+                  borderRadius={3}
+                  cursor={"pointer"}
+                  onClick={() => logout()}
+                >
+                  ログアウト
+                </Button>
               </HStack>
             ) : (
               <HStack spacing="24px">

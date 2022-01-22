@@ -20,7 +20,7 @@ type AuthContextType = {
     password: string
   ) => Promise<void>;
   createUser?: (
-    userName: string,
+    // userName: string,
     email: string,
     password: string
   ) => Promise<void>;
@@ -38,14 +38,14 @@ const AuthProvider: FC = ({ children }) => {
   const router = useRouter();
 
   // アカウント新規作成
-  const createUser = async (email, password, userName) => {
+  const createUser = async (email, password) => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       let userID = auth.currentUser!.uid;
-      await setDoc(doc(db, "users", userID), {
-        displayName: userName,
-      });
-      router.push("/works");
+      // await setDoc(doc(db, "users", userID), {
+      //   displayName: userName,
+      // });
+      router.push("/profile");
     } catch (err: unknown) {
       if (err instanceof Error) {
         alert(err);
@@ -57,7 +57,7 @@ const AuthProvider: FC = ({ children }) => {
   const loginWithEmailAndPassword = async (email, password) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.push("/works");
+      router.push("/profile");
     } catch (err: unknown) {
       if (err instanceof Error) {
         alert(err.message);
@@ -70,7 +70,7 @@ const AuthProvider: FC = ({ children }) => {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithRedirect(auth, provider);
-      router.push("/works");
+      router.push("/profile");
     } catch (error) {
       console.error(error);
     }
