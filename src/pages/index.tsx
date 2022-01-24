@@ -2,8 +2,12 @@ import { Layout } from "../components/common/Layout";
 import { Button, Heading, Flex, Text } from "@chakra-ui/react";
 import { MdContainer } from "src/components/custom/MdContainer";
 import Link from "next/link";
+import { useAuth } from "src/lib/AuthProvider";
+import { useEffect } from "react";
 
 export default function Home() {
+  const { currentUser } = useAuth();
+
   return (
     <Layout title="タイトル">
       <MdContainer>
@@ -35,48 +39,50 @@ export default function Home() {
           </Button>
         </Link>
 
-        <Flex
-          flexDirection={"column"}
-          alignItems={"center"}
-          marginTop={20}
-          width={"100%"}
-        >
-          <Text>レビューを受けたい方はこちら</Text>
+        {!currentUser && (
           <Flex
-            marginTop={4}
-            flexDirection={["column", "row"]}
-            width={["100%", "auto"]}
+            flexDirection={"column"}
+            alignItems={"center"}
+            marginTop={20}
+            width={"100%"}
           >
-            <Link href="/login">
-              <Button
-                as="a"
-                colorScheme={"white"}
-                variant="outline"
-                color={"#000"}
-                borderRadius={2}
-                paddingX={8}
-                paddingY={6}
-                cursor={"pointer"}
-              >
-                ログイン
-              </Button>
-            </Link>
-            <Link href="/signup">
-              <Button
-                as="a"
-                colorScheme={"teal"}
-                borderRadius={2}
-                marginLeft={[0, 6]}
-                marginTop={[4, 0]}
-                paddingX={8}
-                paddingY={6}
-                cursor={"pointer"}
-              >
-                サインアップ
-              </Button>
-            </Link>
+            <Text>レビューを受けたい方はこちら</Text>
+            <Flex
+              marginTop={4}
+              flexDirection={["column", "row"]}
+              width={["100%", "auto"]}
+            >
+              <Link href="/login">
+                <Button
+                  as="a"
+                  colorScheme={"white"}
+                  variant="outline"
+                  color={"#000"}
+                  borderRadius={2}
+                  paddingX={8}
+                  paddingY={6}
+                  cursor={"pointer"}
+                >
+                  ログイン
+                </Button>
+              </Link>
+              <Link href="/signup">
+                <Button
+                  as="a"
+                  colorScheme={"teal"}
+                  borderRadius={2}
+                  marginLeft={[0, 6]}
+                  marginTop={[4, 0]}
+                  paddingX={8}
+                  paddingY={6}
+                  cursor={"pointer"}
+                >
+                  サインアップ
+                </Button>
+              </Link>
+            </Flex>
           </Flex>
-        </Flex>
+        )}
       </MdContainer>
     </Layout>
   );

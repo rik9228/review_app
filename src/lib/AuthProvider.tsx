@@ -5,9 +5,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithRedirect,
 } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
-import { auth, db } from "./firebase";
+import { auth } from "./firebase";
 import { FC, createContext, useEffect, useState, useContext } from "react";
 import { CircularProgress } from "@chakra-ui/react";
 
