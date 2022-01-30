@@ -14,7 +14,14 @@ export const Card = ({ work, user }: Props) => {
   const formattedCreatedAt = format(work.createdAt.toDate(), "yyyy年MM月dd日");
 
   return (
-    <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
+    <Box
+      maxW="sm"
+      borderWidth="1px"
+      borderRadius="lg"
+      overflow="hidden"
+      mx={"auto"}
+      width={"full"}
+    >
       <Img
         src={work.image}
         width={"100%"}
