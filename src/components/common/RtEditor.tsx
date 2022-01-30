@@ -1,11 +1,12 @@
 import dynamic from "next/dynamic";
+import { memo } from "react";
 
 const RichTextEditor = dynamic(() => import("@mantine/rte"), {
   ssr: false,
   loading: () => null,
 });
 
-export const RtEditor = ({ description, setDescription }) => {
+const RtEditor = ({ description, setDescription }) => {
   return (
     <RichTextEditor
       controls={[
@@ -21,3 +22,5 @@ export const RtEditor = ({ description, setDescription }) => {
     />
   );
 };
+
+export default memo(RtEditor);
