@@ -19,6 +19,7 @@ import { useRouter } from "next/router";
 import { useAuth } from "../../lib/AuthProvider";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { db } from "src/lib/firebase";
+import { MdBuild, MdCreate, MdLogout } from "react-icons/md";
 import Link from "next/link";
 
 export const Header = () => {
@@ -71,57 +72,43 @@ export const Header = () => {
                 </Flex>
                 <MenuList>
                   <MenuGroup>
-                    <MenuItem>
-                      <Link href="/profile">
-                        <a>プロフィールを編集</a>
-                      </Link>
+                    <Link href="/profile">
+                      <MenuItem>
+                        <Text
+                          as="a"
+                          display={"flex"}
+                          alignItems={"center"}
+                          gap={2}
+                        >
+                          <MdBuild />
+                          プロフィールを編集
+                        </Text>
+                      </MenuItem>
+                    </Link>
+                    <Link href="/works/new">
+                      <MenuItem>
+                        <Text
+                          as="a"
+                          display={"flex"}
+                          alignItems={"center"}
+                          gap={2}
+                        >
+                          <MdCreate />
+                          <Text>レビュー依頼をする</Text>
+                        </Text>
+                      </MenuItem>
+                    </Link>
+                    <MenuDivider />
+                    <MenuItem onClick={() => logout()}>
+                      <Text display={"flex"} alignItems={"center"} gap={2}>
+                        <MdLogout />
+                        ログアウト
+                      </Text>
                     </MenuItem>
-                    <MenuItem>ヘルプ</MenuItem>
-                    <MenuItem onClick={() => logout()}>ログアウト</MenuItem>
                   </MenuGroup>
                 </MenuList>
               </Menu>
             ) : (
-              // <HStack spacing={4}>
-              //   {/* <Link href="/works/new">
-              //     <Button
-              //       as="a"
-              //       colorScheme="teal"
-              //       borderRadius={3}
-              //       cursor={"pointer"}
-              //       display={["none", "flex"]}
-              //     >
-              //       レビュー依頼をする
-              //     </Button>
-              //   </Link> */}
-              //   <Text display={["none", "flex"]}>
-              //     こんにちは、
-              //     {displayName ?? ""}
-              //     さん
-              //   </Text>
-              //   <Link href="/profile">
-              //     <Avatar
-              //       as="a"
-              //       name="Dan Abrahmov"
-              //       width={"40px"}
-              //       height={"40px"}
-              //       src={
-              //         currentUser.photoURL ??
-              //         "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-              //       }
-              //       cursor={"pointer"}
-              //     />
-              //   </Link>
-              //   {/* <Button
-              //     as="a"
-              //     colorScheme="red"
-              //     borderRadius={3}
-              //     cursor={"pointer"}
-              //     onClick={() => logout()}
-              //   >
-              //     ログアウト
-              //   </Button> */}
-              // </HStack>
               <HStack spacing="24px">
                 <Link href="/login">
                   <Button
