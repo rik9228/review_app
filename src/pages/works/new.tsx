@@ -14,10 +14,23 @@ import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { db } from "src/lib/firebase";
 import { useAuth } from "src/lib/AuthProvider";
-import Editor from "src/components/common/Editor";
+import RtEditor from "src/components/common/RtEditor";
 
 export default function New() {
-  const initialValue = `## 作品概要\n\n## 工夫したところ\n\n## 気になっていること\n\n## その他`;
+  const initialValue = `
+  <h2>作品概要</h2>
+  <br/>
+  <br/>
+  <h2>工夫したところ</h2>
+  <br/>
+  <br/>
+  <h2>気になっていること</h2>
+  <br/>
+  <br/>
+  <h2>その他</h2>
+  <br/>
+  <br/>
+  `;
 
   const router = useRouter();
   const now = Timestamp.now().toDate();
@@ -146,7 +159,7 @@ export default function New() {
           >
             相談内容
           </Heading>
-          <Editor description={description} setDescription={setDescription} />
+          <RtEditor description={description} setDescription={setDescription} />
         </Box>
         <Button
           colorScheme={"teal"}
