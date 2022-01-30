@@ -3,7 +3,6 @@ import { Button, Heading, Flex, Text } from "@chakra-ui/react";
 import { MdContainer } from "src/components/custom/MdContainer";
 import Link from "next/link";
 import { useAuth } from "src/lib/AuthProvider";
-import { useEffect } from "react";
 
 export default function Home() {
   const { currentUser } = useAuth();

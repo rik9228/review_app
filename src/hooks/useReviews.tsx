@@ -15,12 +15,12 @@ export const useReviews = (workId) => {
         setIsLoading(false);
         const reviewDocs = snapshot.docs;
 
-        const fetchedReviews: any[] = reviewDocs.map((userDoc) => ({
-          createdAt: userDoc.data().createdAt,
-          reviewedBy: userDoc.data().reviewedBy,
-          description: userDoc.data().description,
-          userInfo: userDoc.data().userInfo,
-          docId: userDoc.id,
+        const fetchedReviews: any[] = reviewDocs.map((reviewDoc) => ({
+          createdAt: reviewDoc.data().createdAt,
+          reviewedBy: reviewDoc.data().reviewedBy,
+          description: reviewDoc.data().description,
+          userInfo: reviewDoc.data().userInfo,
+          docId: reviewDoc.id,
         }));
 
         // 日付の降順に並べ替え
